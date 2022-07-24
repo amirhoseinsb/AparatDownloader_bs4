@@ -76,7 +76,15 @@ class LinkCrawl(Crawl):
         example: {"480": "sample-link", ...}
         :return:
         """
-        pass
+        match = {}
+
+        links = self.get_all_links()
+        qualities = self.get_all_qualities()
+
+        for quality, link in zip(qualities, links):
+            match.setdefault(quality, link)
+
+        return match
 
     def get_link(self, quality):
         """
