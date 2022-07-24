@@ -1,3 +1,4 @@
+import re
 import time
 
 import requests
@@ -60,7 +61,14 @@ class LinkCrawl(Crawl):
         Parse self.content and store qualities in a list
         :return:
         """
-        pass
+        qualities = []
+
+        fetch_all_links = self.content["attributes"]["file_link_all"]
+        for link in fetch_all_links:
+            quality = re.findall(pattern=r"\d+", string=link["text"])[0]
+            qualities.append(quality)
+
+        return qualities
 
     def match_quality_and_link(self):
         """
