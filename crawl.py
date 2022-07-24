@@ -46,7 +46,14 @@ class LinkCrawl(Crawl):
         Parse self.content and store link in a list
         :return:
         """
-        pass
+        links = []
+
+        fetch_all_links = self.content["attributes"]["file_link_all"]
+        for link in fetch_all_links:
+            url = link["urls"][0]
+            links.append(url)
+
+        return links
 
     def get_all_qualities(self):
         """
