@@ -1,6 +1,10 @@
+import time
+
 import requests
 
 from abc import ABC, abstractmethod
+
+from config import BASE_PATH
 
 
 class Crawl(ABC):
@@ -23,7 +27,19 @@ class LinkCrawl(Crawl):
         :param stream:
         :return:
         """
-        pass
+        uid = url.split("/")[-1]
+        path = BASE_PATH + uid
+        try:
+            response = requests.get(path)
+        except requests.exceptions.ConnectionError:
+            print("Connection Error.")
+            print("The request will be automatically resubmitted.")
+            print("Wait a few moments...")
+            time.sleep(3)
+            self.get_request(url)
+        else:
+            json_content = response.json()
+            self.content = json_content.get("data")
 
     def get_all_links(self):
         """
