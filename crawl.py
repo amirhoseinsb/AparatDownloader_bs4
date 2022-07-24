@@ -6,6 +6,7 @@ import requests
 from abc import ABC, abstractmethod
 
 from config import BASE_PATH
+from exceptions import QualityError
 
 
 class Crawl(ABC):
@@ -91,4 +92,11 @@ class LinkCrawl(Crawl):
         Return specific link
         :return:
         """
-        pass
+        match = self.match_quality_and_link()
+
+        if quality not in match.keys():
+            available_qualities = list(match.keys())
+            raise QualityError(
+                f'Sorry, this quality is not available\nAvailable qualities are {available_qualities}'
+            )
+        return match.get(quality)
