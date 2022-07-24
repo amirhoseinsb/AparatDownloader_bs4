@@ -20,7 +20,7 @@ class LinkCrawl(Crawl):
 
     def __init__(self, url):
         self.url = url
-        self.content = None
+        self.content = self.get_request(self.url)
 
     def get_request(self, url, stream=False):
         """
@@ -41,7 +41,7 @@ class LinkCrawl(Crawl):
             self.get_request(url)
         else:
             json_content = response.json()
-            self.content = json_content.get("data")
+            return json_content.get("data")
 
     def get_all_links(self):
         """
